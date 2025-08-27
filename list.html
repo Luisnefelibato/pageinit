@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo de Agentes IA - Selecciona tu Vendedor Digital | Antares Innovate</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-dark: #0B1426;
+            --secondary-dark: #1E293B;
+            --black-elegant: #000000;
+            --dark-surface: #0F172A;
+            --blue-accent: #1E40AF;
+            --blue-light: #3B82F6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--black-elegant) 100%);
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .floating-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(59, 130, 246, 0.6);
+            border-radius: 50%;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .glass-effect {
+            background: rgba(30, 41, 59, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            border-radius: 20px;
+        }
+
+        .header-enhanced {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+            position: relative;
+            z-index: 50;
+        }
+
+        .logo-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-glow {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: logoGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+
+        .brand-name {
+            background: linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .brand-tagline {
+            color: #8B5CF6;
+            font-size: 12px;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, var(--blue-accent) 0%, var(--blue-light) 100%);
+            padding: 12px 24px;
+            border-radius: 50px;
+            border: none;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(30, 64, 175, 0.4);
+        }
+
+        .section-padding {
+            padding: 80px 40px;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            line-height: 1.1;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            line-height: 1.4;
+            color: #8696a0;
+            text-align: center;
+            margin-bottom: 60px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .agent-card {
+            background: rgba(30, 41, 59, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            position: relative;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .agent-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, transparent 50%, rgba(30, 64, 175, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .agent-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(30, 64, 175, 0.3);
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+
+        .agent-card:hover::before {
+            opacity: 1;
+        }
+
+        .status-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 12px;
+            height: 12px;
+            background: #10B981;
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+            animation: statusPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.2); }
+        }
+
+        .agent-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--blue-accent) 0%, var(--blue-light) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: white;
+            margin: 0 auto 24px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+        }
+
+        .agent-avatar::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(45deg, #3B82F6, #1E40AF, #3B82F6);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: avatarGlow 3s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes avatarGlow {
+            0%, 100% { opacity: 0.6; transform: rotate(0deg) scale(1); }
+            50% { opacity: 0.8; transform: rotate(180deg) scale(1.1); }
+        }
+
+        .sofia-card .agent-avatar {
+            background: linear-gradient(135deg, #DC2626 0%, #EF4444 100%);
+        }
+
+        .carolina-card .agent-avatar {
+            background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+        }
+
+        .luis-card .agent-avatar {
+            background: linear-gradient(135deg, #374151 0%, #6B7280 100%);
+        }
+
+        .agent-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .agent-title {
+            font-size: 1.1rem;
+            color: var(--blue-light);
+            margin-bottom: 4px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .agent-company {
+            font-size: 1rem;
+            color: #8696a0;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .agent-description {
+            color: #D1D5DB;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+
+        .agent-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .stat-item {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--blue-light);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #8696a0;
+            font-weight: 500;
+        }
+
+        .agent-button {
+            background: linear-gradient(135deg, var(--blue-accent) 0%, var(--blue-light) 100%);
+            padding: 16px 32px;
+            border-radius: 50px;
+            border: none;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .agent-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .agent-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(30, 64, 175, 0.4);
+        }
+
+        .agent-button:hover::before {
+            left: 100%;
+        }
+
+        .sofia-card .agent-button {
+            background: linear-gradient(135deg, #DC2626 0%, #EF4444 100%);
+        }
+
+        .sofia-card .agent-button:hover {
+            box-shadow: 0 15px 30px rgba(220, 38, 38, 0.4);
+        }
+
+        .carolina-card .agent-button {
+            background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+        }
+
+        .carolina-card .agent-button:hover {
+            box-shadow: 0 15px 30px rgba(5, 150, 105, 0.4);
+        }
+
+        .luis-card .agent-button {
+            background: linear-gradient(135deg, #374151 0%, #6B7280 100%);
+        }
+
+        .luis-card .agent-button:hover {
+            box-shadow: 0 15px 30px rgba(55, 65, 81, 0.4);
+        }
+
+        .cta-section {
+            text-align: center;
+            margin-top: 80px;
+            padding: 60px 40px;
+            background: rgba(30, 41, 59, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            border-radius: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .footer {
+            padding: 40px 20px;
+            border-top: 1px solid rgba(59, 130, 246, 0.1);
+            background: rgba(15, 23, 42, 0.8);
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .footer-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--blue-accent) 0%, var(--blue-light) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .footer-text {
+            color: #8696a0;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .section-padding {
+                padding: 40px 20px;
+            }
+
+            .agents-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .agent-card {
+                padding: 30px 20px;
+            }
+
+            .agent-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .header-enhanced .container {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-delay-1 { animation-delay: 0.2s; }
+        .animate-delay-2 { animation-delay: 0.4s; }
+        .animate-delay-3 { animation-delay: 0.6s; }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-particle" style="top: 10%; left: 10%; animation-delay: 0s;"></div>
+        <div class="floating-particle" style="top: 20%; right: 15%; animation-delay: 1s;"></div>
+        <div class="floating-particle" style="top: 60%; left: 5%; animation-delay: 2s;"></div>
+        <div class="floating-particle" style="top: 80%; right: 20%; animation-delay: 3s;"></div>
+        <div class="floating-particle" style="top: 40%; left: 80%; animation-delay: 4s;"></div>
+        <div class="floating-particle" style="top: 15%; left: 70%; animation-delay: 5s;"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header-enhanced relative z-50 p-4 lg:p-6">
+        <nav class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="logo-container">
+                    <img src="loguito.png" alt="Antares Innovate" class="h-16 w-16 lg:h-24 lg:w-24">
+                    <div class="logo-glow"></div>
+                </div>
+                <div class="brand-info">
+                    <span class="brand-name text-lg lg:text-xl font-bold">Antares Innovate</span>
+                    <div class="brand-tagline">Vendedores Digitales IA</div>
+                </div>
+            </div>
+
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                <span>Volver</span>
+            </a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <section class="section-padding">
+        <div class="container mx-auto">
+            <h1 class="hero-title fade-in-up">
+                Selecciona tu <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">Vendedor Digital</span>
+            </h1>
+            <p class="hero-subtitle fade-in-up animate-delay-1">
+                Prueba nuestros agentes especializados en diferentes sectores y experimenta el poder de la IA en ventas profesionales.
+            </p>
+
+            <div class="agents-grid">
+                <!-- Sofía de Claro -->
+                <div class="agent-card sofia-card fade-in-up animate-delay-1">
+                    <div class="status-indicator"></div>
+                    <div class="agent-avatar">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="agent-name">Sofía Rodríguez</h3>
+                    <p class="agent-title">Especialista en Telecomunicaciones</p>
+                    <p class="agent-company">Claro Colombia</p>
+                    <p class="agent-description">
+                        Experta en planes móviles, paquetes de datos y servicios de telecomunicaciones. Sofía domina todas las ofertas de Claro y puede asesorar desde planes básicos hasta soluciones empresariales avanzadas.
+                    </p>
+                    <div class="agent-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">94%</div>
+                            <div class="stat-label">Tasa Cierre</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">2.3min</div>
+                            <div class="stat-label">Tiempo Promedio</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">1,247</div>
+                            <div class="stat-label">Ventas Mes</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.9/5</div>
+                            <div class="stat-label">Satisfacción</div>
+                        </div>
+                    </div>
+                    <a href="sofia.html" target="_blank" class="agent-button">
+                        <i class="fas fa-phone"></i>
+                        <span>Probar Sofía</span>
+                    </a>
+                </div>
+
+                <!-- Carolina de Colsanitas -->
+                <div class="agent-card carolina-card fade-in-up animate-delay-2">
+                    <div class="status-indicator"></div>
+                    <div class="agent-avatar">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3 class="agent-name">Carolina Méndez</h3>
+                    <p class="agent-title">Experta en Seguros de Salud</p>
+                    <p class="agent-company">Colsanitas EPS</p>
+                    <p class="agent-description">
+                        Especialista en seguros médicos, planes de salud familiar y cobertura empresarial. Carolina maneja todo el portafolio de Colsanitas con un enfoque humanizado y profesional.
+                    </p>
+                    <div class="agent-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">96%</div>
+                            <div class="stat-label">Tasa Cierre</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">3.1min</div>
+                            <div class="stat-label">Tiempo Promedio</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">892</div>
+                            <div class="stat-label">Afiliaciones Mes</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.8/5</div>
+                            <div class="stat-label">Satisfacción</div>
+                        </div>
+                    </div>
+                    <a href="carolina.html" target="_blank" class="agent-button">
+                        <i class="fas fa-phone"></i>
+                        <span>Probar Carolina</span>
+                    </a>
+                </div>
+
+                <!-- Luis de TechStore -->
+                <div class="agent-card luis-card fade-in-up animate-delay-3">
+                    <div class="status-indicator"></div>
+                    <div class="agent-avatar">
+                        <i class="fas fa-laptop"></i>
+                    </div>
+                    <h3 class="agent-name">Luis García</h3>
+                    <p class="agent-title">Vendedor de Tecnología</p>
+                    <p class="agent-company">TechStore Pro</p>
+                    <p class="agent-description">
+                        Experto en tecnología y gadgets. Luis conoce cada especificación técnica y puede recomendar desde smartphones hasta equipos empresariales según las necesidades exactas del cliente.
+                    </p>
+                    <div class="agent-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">92%</div>
+                            <div class="stat-label">Tasa Cierre</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">2.8min</div>
+                            <div class="stat-label">Tiempo Promedio</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">1,534</div>
+                            <div class="stat-label">Ventas Mes</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.7/5</div>
+                            <div class="stat-label">Satisfacción</div>
+                        </div>
+                    </div>
+                    <a href="luis.html" target="_blank" class="agent-button">
+                        <i class="fas fa-phone"></i>
+                        <span>Probar Luis</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="cta-section fade-in-up animate-delay-3">
+                <h2 class="text-3xl font-bold mb-6 text-white">
+                    ¿Impresionado con los resultados?
+                </h2>
+                <p class="text-xl text-gray-300 mb-8">
+                    Estos son solo demos. Imagina el potencial real para tu empresa con agentes personalizados para tu industria específica.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="https://wa.me/16893312690?text=Quiero%20solicitar%20informacion%20sobre%20los%20agentes%20de%20ventas%20IA" target="_blank" class="back-button">
+                        <i class="fas fa-whatsapp"></i>
+                        Solicitar Información
+                    </a>
+                    <a href="javascript:history.back()" class="back-button bg-transparent border border-blue-400 hover:bg-blue-400">
+                        <i class="fas fa-arrow-left"></i>
+                        Volver al Inicio
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-gray-800">
+        <div class="container mx-auto text-center">
+            <div class="flex items-center justify-center space-x-3 mb-4">
+                <img src="loguito.png" alt="Antares Innovate" class="h-12 w-12">
+                <span class="font-semibold">Antares Innovate</span>
+            </div>
+            <p class="text-gray-400 text-sm">
+                La Creatividad Mueve el Mundo; la Tecnología lo Acelera.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Add some interactive particles
+        function createFloatingParticles() {
+            const container = document.querySelector('.floating-elements');
+            if (container && window.innerWidth > 768) {
+                for (let i = 0; i < 10; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'floating-particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.top = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 6 + 's';
+                    particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                    container.appendChild(particle);
+                }
+            }
+        }
+
+        // Initialize particles on desktop
+        document.addEventListener('DOMContentLoaded', createFloatingParticles);
+
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add click effects to agent buttons
+        document.querySelectorAll('.agent-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                // Create ripple effect
+                const ripple = document.createElement('div');
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.3);
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    pointer-events: none;
+                `;
+                
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+                ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Add ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(2);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

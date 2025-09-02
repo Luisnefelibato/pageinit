@@ -1,12 +1,31 @@
 {
+  "version": 2,
   "functions": {
-    "api/ai-response.js": {
+    "agentepage/api/tts.js": {
       "maxDuration": 30
     },
-    "api/tts.js": {
-      "maxDuration": 30
+    "agentepage/api/ai-response.js": {
+      "maxDuration": 15
     }
   },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/agentepage/api/$1"
+    },
+    {
+      "source": "/",
+      "destination": "/agentepage/index.html"
+    },
+    {
+      "source": "/list",
+      "destination": "/agentepage/list/index.html"
+    },
+    {
+      "source": "/(sofia|carolina|luis|mariana|juan|carlos|marcela|andrea|andres|valentina)",
+      "destination": "/agentepage/list/$1/index.html"
+    }
+  ],
   "headers": [
     {
       "source": "/api/(.*)",
@@ -16,56 +35,14 @@
           "value": "*"
         },
         {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, OPTIONS"
+          "key": "Access-Control-Allow-Methods", 
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
         },
         {
           "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type, Authorization"
+          "value": "X-Requested-With, Content-Type, Authorization"
         }
       ]
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/sofia/(.*)",
-      "destination": "/sofia/index.html"
-    },
-    {
-      "source": "/carolina/(.*)",
-      "destination": "/carolina/index.html"
-    },
-    {
-      "source": "/luis/(.*)",
-      "destination": "/luis/index.html"
-    },
-    {
-      "source": "/mariana/(.*)",
-      "destination": "/mariana/index.html"
-    },
-    {
-      "source": "/juan/(.*)",
-      "destination": "/juan/index.html"
-    },
-    {
-      "source": "/carlos/(.*)",
-      "destination": "/carlos/index.html"
-    },
-    {
-      "source": "/marcela/(.*)",
-      "destination": "/marcela/index.html"
-    },
-    {
-      "source": "/andrea/(.*)",
-      "destination": "/andrea/index.html"
-    },
-    {
-      "source": "/andres/(.*)",
-      "destination": "/andres/index.html"
-    },
-    {
-      "source": "/valentina/(.*)",
-      "destination": "/valentina/index.html"
     }
   ]
 }

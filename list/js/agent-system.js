@@ -1,520 +1,622 @@
-// js/agent-system.js - Sistema modular de agentes para producción
+// Universal Agent System - Versión Corregida con Manejo Robusto de APIs
+// Corrige errores de JSON y mejora el manejo de respuestas
+
 class UniversalAgentSystem {
-    constructor(agentType) {
-        this.agentType = agentType;
-        this.isCallActive = false;
-        this.isAgentSpeaking = false;
-        this.isMicrophoneActive = false;
-        this.isProcessingResponse = false;
-        
+    constructor() {
+        this.currentAgent = null;
+        this.isListening = false;
+        this.isThinking = false;
+        this.isSpeaking = false;
+        this.conversationHistory = [];
         this.volume = 0.8;
-        this.recognition = null;
-        this.currentAudio = null;
-        this.silenceTimer = null;
-        this.microphoneTimer = null;
         
-        this.finalTranscript = '';
-        this.interimTranscript = '';
-        this.conversationHistory = [];
-        this.interactionCount = 0;
-        this.callStartTime = null;
-        this.callTimer = null;
+        // Elementos DOM
+        this.chatContainer = null;
+        this.messageInput = null;
+        this.sendButton = null;
+        this.agentAvatar = null;
+        this.agentName = null;
+        this.statusIndicator = null;
+        this.volumeSlider = null;
         
-        this.initializeElements();
-        this.initializeVoiceRecognition();
+        // Configuración de agentes
+        this.agents = {
+            sofia: {
+                name: "Sofía Rodríguez",
+                company: "Claro Colombia",
+                specialty: "Telecomunicaciones y planes móviles",
+                avatar: "SF",
+                color: "#e91e63",
+                personality: "Profesional de telecomunicaciones, entusiasta con los planes móviles"
+            },
+            carolina: {
+                name: "Carolina Méndez", 
+                company: "Colsanitas EPS",
+                specialty: "Seguros médicos y planes de salud",
+                avatar: "CM",
+                color: "#2196f3",
+                personality: "Asesora médica cálida, enfocada en el bienestar familiar"
+            },
+            luis: {
+                name: "Luis García",
+                company: "TechStore Pro", 
+                specialty: "Tecnología y gadgets",
+                avatar: "LG",
+                color: "#ff9800",
+                personality: "Vendedor tech experto, conoce especificaciones técnicas"
+            },
+            mariana: {
+                name: "Mariana Educa",
+                company: "Sector Educativo",
+                specialty: "Procesos educativos y matrículas", 
+                avatar: "ME",
+                color: "#4caf50",
+                personality: "Educativa maternal, organizada con procesos académicos"
+            },
+            juan: {
+                name: "Juan Ciudadano",
+                company: "Servicios Gubernamentales",
+                specialty: "Trámites gubernamentales",
+                avatar: "JC", 
+                color: "#607d8b",
+                personality: "Funcionario eficiente, conoce todos los trámites oficiales"
+            },
+            carlos: {
+                name: "Carlos Finanzas",
+                company: "Servicios Crediticios",
+                specialty: "Recordatorios financieros y asesoría crediticia",
+                avatar: "CF",
+                color: "#795548", 
+                personality: "Asesor financiero empático, organizado con los pagos"
+            },
+            marcela: {
+                name: "Marcela RRHH",
+                company: "Gestión de Talento", 
+                specialty: "Recursos humanos y coordinación de entrevistas",
+                avatar: "MR",
+                color: "#9c27b0",
+                personality: "Profesional HR organizada, cálida en el trato"
+            },
+            andrea: {
+                name: "Andrea BancaAmiga",
+                company: "Productos Financieros",
+                specialty: "Productos bancarios y financieros", 
+                avatar: "AB",
+                color: "#00bcd4",
+                personality: "Asesora bancaria profesional, enfocada en soluciones financieras"
+            },
+            andres: {
+                name: "Andrés OnVacation", 
+                company: "Agencia de Viajes",
+                specialty: "Paquetes turísticos y viajes",
+                avatar: "AV",
+                color: "#8bc34a",
+                personality: "Agente turístico apasionado, especialista en destinos paradisíacos"
+            },
+            valentina: {
+                name: "Valentina Éxito",
+                company: "Supermercados Éxito",
+                specialty: "Retail y ofertas comerciales",
+                avatar: "VE", 
+                color: "#f44336",
+                personality: "Vendedora retail entusiasta, experta en promociones"
+            }
+        };
+        
+        this.init();
+    }
+
+    // ✅ FUNCIÓN CORREGIDA: Convierte base64 a blob sin usar Buffer
+    base64ToBlob(base64Data, contentType = 'audio/mpeg') {
+        try {
+            // Decodificar base64 usando la función nativa del navegador
+            const binaryString = atob(base64Data);
+            const bytes = new Uint8Array(binaryString.length);
+            
+            for (let i = 0; i < binaryString.length; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            
+            return new Blob([bytes], { type: contentType });
+        } catch (error) {
+            console.error('Error converting base64 to blob:', error);
+            throw new Error('Failed to convert audio data');
+        }
+    }
+
+    init() {
+        this.initializeDOM();
         this.setupEventListeners();
+        this.loadAgentFromURL();
+    }
+
+    initializeDOM() {
+        // Buscar elementos DOM
+        this.chatContainer = document.getElementById('chatContainer');
+        this.messageInput = document.getElementById('messageInput');
+        this.sendButton = document.getElementById('sendButton');
+        this.agentAvatar = document.getElementById('agentAvatar');
+        this.agentName = document.getElementById('agentName');
+        this.statusIndicator = document.getElementById('statusIndicator');
+        this.volumeSlider = document.getElementById('volumeSlider');
         
-        console.log(`✅ ${this.getAgentName()} System inicializado para producción`);
+        // Verificar que todos los elementos existen
+        if (!this.chatContainer || !this.messageInput || !this.sendButton) {
+            console.warn('Algunos elementos DOM no encontrados, creando interface básica');
+            this.createBasicInterface();
+        }
     }
-    
-    getAgentName() {
-        const names = {
-            sofia: 'Sofía Claro',
-            carolina: 'Carolina Colsanitas', 
-            luis: 'Luis TechStore',
-            mariana: 'Mariana Educa',
-            juan: 'Juan Ciudadano',
-            carlos: 'Carlos Finanzas',
-            marcela: 'Marcela RRHH',
-            andrea: 'Andrea BancaAmiga',
-            andres: 'Andrés OnVacation',
-            valentina: 'Valentina Éxito'
-        };
-        return names[this.agentType] || 'Agente IA';
-    }
-    
-    initializeElements() {
-        this.callButton = document.getElementById('callButton');
-        this.endCallButton = document.getElementById('endCallButton');
-        this.callStatus = document.getElementById('callStatus');
-        this.transcriptDisplay = document.getElementById('transcriptDisplay');
-        this.conversationDisplay = document.getElementById('conversationDisplay');
-        this.audioVisualizer = document.getElementById('audioVisualizer');
+
+    createBasicInterface() {
+        // Crear interface básica si no existe
+        const container = document.body;
+        container.innerHTML += `
+            <div id="agentInterface" style="max-width: 800px; margin: 20px auto; padding: 20px;">
+                <div id="agentHeader" style="text-align: center; margin-bottom: 20px;">
+                    <div id="agentAvatar" style="width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24px;"></div>
+                    <h2 id="agentName"></h2>
+                    <div id="statusIndicator" style="padding: 5px 15px; border-radius: 15px; display: inline-block; margin-top: 10px;"></div>
+                </div>
+                <div id="chatContainer" style="height: 400px; border: 1px solid #ddd; border-radius: 10px; overflow-y: auto; padding: 15px; margin-bottom: 15px; background: #f9f9f9;"></div>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="messageInput" placeholder="Escribe tu mensaje..." style="flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 5px;">
+                    <button id="sendButton" style="padding: 12px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">Enviar</button>
+                </div>
+                <div style="margin-top: 10px;">
+                    <label>Volumen: </label>
+                    <input type="range" id="volumeSlider" min="0" max="100" value="80" style="width: 200px;">
+                </div>
+            </div>
+        `;
         
-        // Stats elements
-        this.callDurationEl = document.getElementById('callDuration');
-        this.responseTimeEl = document.getElementById('responseTime');
-        this.callStatusEl = document.getElementById('callStatus2');
-        this.interactionsEl = document.getElementById('interactions');
+        // Actualizar referencias DOM
+        this.initializeDOM();
     }
-    
+
     setupEventListeners() {
-        if (this.callButton) {
-            this.callButton.addEventListener('click', () => this.startCall());
-        }
-        if (this.endCallButton) {
-            this.endCallButton.addEventListener('click', () => this.endCall());
-        }
-    }
-    
-    initializeVoiceRecognition() {
-        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-            console.error('❌ Reconocimiento de voz no soportado');
-            return;
-        }
-
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        this.recognition = new SpeechRecognition();
-        
-        this.recognition.continuous = true;
-        this.recognition.interimResults = true;
-        this.recognition.lang = 'es-CO';
-        this.recognition.maxAlternatives = 1;
-
-        this.recognition.onstart = () => {
-            this.isMicrophoneActive = true;
-            this.updateCallStatus(`🎧 ${this.getAgentName()} escucha - Habla cuando quieras`, 'listening');
-        };
-
-        this.recognition.onresult = (event) => {
-            this.interimTranscript = '';
-            
-            for (let i = event.resultIndex; i < event.results.length; i++) {
-                const transcript = event.results[i][0].transcript;
-                
-                if (event.results[i].isFinal) {
-                    this.finalTranscript += transcript + ' ';
-                } else {
-                    this.interimTranscript += transcript;
-                }
-            }
-            
-            const currentText = this.finalTranscript + this.interimTranscript;
-            if (currentText.trim() && this.transcriptDisplay) {
-                this.transcriptDisplay.textContent = `🎤 "${currentText.trim()}"`;
-            }
-            
-            clearTimeout(this.silenceTimer);
-            this.silenceTimer = setTimeout(() => {
-                if (this.finalTranscript.trim()) {
-                    this.processUserInput();
-                }
-            }, 1500);
-        };
-
-        this.recognition.onerror = (event) => {
-            console.warn('❌ Error reconocimiento:', event.error);
-            this.isMicrophoneActive = false;
-            
-            if (this.isCallActive && !this.isAgentSpeaking) {
-                setTimeout(() => this.activateMicrophone(), 1000);
-            }
-        };
-
-        this.recognition.onend = () => {
-            this.isMicrophoneActive = false;
-            
-            if (this.finalTranscript.trim()) {
-                this.processUserInput();
-            } else if (this.isCallActive && !this.isAgentSpeaking && !this.isProcessingResponse) {
-                setTimeout(() => this.activateMicrophone(), 500);
-            }
-        };
-    }
-    
-    activateMicrophone() {
-        if (!this.isCallActive || this.isAgentSpeaking || this.isProcessingResponse || this.isMicrophoneActive) {
-            return;
-        }
-
-        try {
-            this.recognition.start();
-        } catch (error) {
-            setTimeout(() => this.activateMicrophone(), 1000);
-        }
-    }
-    
-    deactivateMicrophone() {
-        clearTimeout(this.silenceTimer);
-        clearTimeout(this.microphoneTimer);
-        
-        this.isMicrophoneActive = false;
-        
-        if (this.recognition) {
-            try {
-                this.recognition.stop();
-            } catch (e) {}
+        if (this.sendButton) {
+            this.sendButton.addEventListener('click', () => this.sendMessage());
         }
         
-        this.finalTranscript = '';
-        this.interimTranscript = '';
-    }
-    
-    async processUserInput() {
-        const userMessage = this.finalTranscript.trim();
-        if (!userMessage) return;
-
-        this.deactivateMicrophone();
-        this.addToConversation(userMessage, 'customer');
-        this.interactionCount++;
-        this.updateStats();
-        
-        this.isProcessingResponse = true;
-        this.updateCallStatus(`⚡ ${this.getAgentName()} procesando...`, 'processing');
-        if (this.callStatusEl) this.callStatusEl.textContent = 'Procesando';
-
-        const startTime = performance.now();
-
-        try {
-            const response = await this.getAIResponse(userMessage);
-            const endTime = performance.now();
-            const responseTime = Math.round(endTime - startTime);
-            
-            if (this.responseTimeEl) this.responseTimeEl.textContent = `${responseTime}ms`;
-            this.addToConversation(response, 'agent');
-            
-            this.isProcessingResponse = false;
-            await this.speakResponse(response);
-            
-        } catch (error) {
-            console.error('Error procesando:', error);
-            this.isProcessingResponse = false;
-            const fallbackResponse = 'Disculpa, ¿podrías repetir eso?';
-            this.addToConversation(fallbackResponse, 'agent');
-            await this.speakResponse(fallbackResponse);
-        }
-    }
-    
-    async getAIResponse(userMessage) {
-        try {
-            const response = await fetch('/api/ai-response', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    message: userMessage,
-                    agentType: this.agentType,
-                    conversationHistory: this.conversationHistory.slice(-4)
-                })
+        if (this.messageInput) {
+            this.messageInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') this.sendMessage();
             });
-
-            if (!response.ok) {
-                throw new Error(`API Error: ${response.status}`);
-            }
-
-            const data = await response.json();
-            
-            if (data.fallback) {
-                return data.fallback;
-            }
-            
-            return data.response || 'Lo siento, no pude procesar tu consulta.';
-            
-        } catch (error) {
-            console.error('Error API IA:', error);
-            return this.getLocalFallback(userMessage);
         }
-    }
-    
-    getLocalFallback(userMessage) {
-        const fallbacks = {
-            sofia: "Hola, soy Sofía de Claro. ¿En qué plan móvil te puedo ayudar?",
-            carolina: "Soy Carolina de Colsanitas. ¿Qué información necesitas sobre seguros médicos?",
-            luis: "Hola, soy Luis de TechStore. ¿Qué tecnología buscas?",
-            mariana: "Soy Mariana. ¿En qué proceso educativo te puedo asesorar?",
-            juan: "Soy Juan. ¿Qué trámite gubernamental necesitas?",
-            carlos: "Hola, soy Carlos. ¿En qué tema financiero te ayudo?",
-            marcela: "Soy Marcela de RRHH. ¿Necesitas coordinar una entrevista?",
-            andrea: "Hola, soy Andrea de BancaAmiga. ¿Qué producto financiero te interesa?",
-            andres: "Soy Andrés de OnVacation. ¿Qué destino tienes en mente?",
-            valentina: "Hola, soy Valentina de Éxito. ¿Qué ofertas buscas?"
-        };
         
-        return fallbacks[this.agentType] || "¿En qué puedo ayudarte?";
-    }
-    
-    async speakResponse(text) {
-        this.isAgentSpeaking = true;
-        this.updateCallStatus(`🗣️ ${this.getAgentName()} respondiendo...`, 'speaking');
-        if (this.callStatusEl) this.callStatusEl.textContent = 'Hablando';
-        if (this.audioVisualizer) this.audioVisualizer.style.display = 'block';
-        if (this.transcriptDisplay) this.transcriptDisplay.textContent = `${this.getAgentName()}: "${text}"`;
-        
-        this.deactivateMicrophone();
-
-        try {
-            // Intentar síntesis de voz con ElevenLabs vía API
-            const response = await fetch('/api/tts', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    text: text,
-                    agentType: this.agentType
-                })
+        if (this.volumeSlider) {
+            this.volumeSlider.addEventListener('input', (e) => {
+                this.volume = e.target.value / 100;
             });
-
-            if (response.ok) {
-                const data = await response.json();
-                const audioBlob = new Blob([
-                    new Uint8Array(Buffer.from(data.audio, 'base64'))
-                ], { type: 'audio/mpeg' });
-                
-                const audioUrl = URL.createObjectURL(audioBlob);
-                this.currentAudio = new Audio(audioUrl);
-                this.currentAudio.volume = this.volume;
-                
-                this.currentAudio.onended = () => {
-                    URL.revokeObjectURL(audioUrl);
-                    this.currentAudio = null;
-                    this.isAgentSpeaking = false;
-                    if (this.audioVisualizer) this.audioVisualizer.style.display = 'none';
-                    if (this.callStatusEl) this.callStatusEl.textContent = 'Escuchando';
-                    if (this.transcriptDisplay) this.transcriptDisplay.textContent = `🎤 ${this.getAgentName()} terminó - Tu turno`;
-                    
-                    if (this.isCallActive) {
-                        setTimeout(() => this.activateMicrophone(), 1000);
-                    }
-                };
-                
-                await this.currentAudio.play();
-            } else {
-                throw new Error('TTS API failed');
-            }
-            
-        } catch (error) {
-            console.error('Error síntesis de voz:', error);
-            this.speakWithBrowser(text);
         }
     }
-    
-    speakWithBrowser(text) {
-        if ('speechSynthesis' in window) {
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'es-ES';
-            utterance.volume = this.volume;
-            
-            utterance.onend = () => {
-                this.isAgentSpeaking = false;
-                if (this.audioVisualizer) this.audioVisualizer.style.display = 'none';
-                if (this.callStatusEl) this.callStatusEl.textContent = 'Escuchando';
-                
-                if (this.isCallActive) {
-                    setTimeout(() => this.activateMicrophone(), 1000);
-                }
-            };
-            
-            speechSynthesis.speak(utterance);
+
+    loadAgentFromURL() {
+        const path = window.location.pathname;
+        const agentId = path.split('/').pop();
+        
+        if (this.agents[agentId]) {
+            this.setAgent(agentId);
         } else {
-            this.isAgentSpeaking = false;
-            if (this.audioVisualizer) this.audioVisualizer.style.display = 'none';
-            if (this.isCallActive) {
-                setTimeout(() => this.activateMicrophone(), 500);
+            // Agente por defecto
+            this.setAgent('sofia');
+        }
+    }
+
+    setAgent(agentId) {
+        if (!this.agents[agentId]) {
+            console.error(`Agente no encontrado: ${agentId}`);
+            return;
+        }
+        
+        this.currentAgent = agentId;
+        const agent = this.agents[agentId];
+        
+        // Actualizar UI
+        if (this.agentAvatar) {
+            this.agentAvatar.textContent = agent.avatar;
+            this.agentAvatar.style.backgroundColor = agent.color;
+        }
+        
+        if (this.agentName) {
+            this.agentName.textContent = `${agent.name} - ${agent.company}`;
+        }
+        
+        this.updateStatus('Disponible', '#4caf50');
+        this.addSystemMessage(`¡Hola! Soy ${agent.name} de ${agent.company}. Especialista en ${agent.specialty}. ¿En qué puedo ayudarte hoy?`);
+        
+        // Mensaje de bienvenida hablado (opcional, solo si está configurado)
+        this.speakWelcomeMessage(agent);
+    }
+
+    async speakWelcomeMessage(agent) {
+        // Hacer el mensaje de bienvenida opcional para evitar errores en carga inicial
+        const welcomeText = `¡Hola! Soy ${agent.name} de ${agent.company}. ¿En qué puedo ayudarte?`;
+        try {
+            await this.speakResponse(welcomeText, this.currentAgent);
+        } catch (error) {
+            console.log('Welcome message could not be spoken (this is normal):', error.message);
+            // No mostrar error al usuario, es normal que el primer audio falle
+        }
+    }
+
+    updateStatus(status, color = '#666') {
+        if (this.statusIndicator) {
+            this.statusIndicator.textContent = status;
+            this.statusIndicator.style.backgroundColor = color;
+            this.statusIndicator.style.color = 'white';
+        }
+    }
+
+    addMessage(message, isUser = false, timestamp = new Date()) {
+        if (!this.chatContainer) return;
+        
+        const messageDiv = document.createElement('div');
+        messageDiv.style.cssText = `
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 10px;
+            max-width: 80%;
+            ${isUser ? 
+                'margin-left: auto; background: #007bff; color: white; text-align: right;' : 
+                'margin-right: auto; background: white; border: 1px solid #ddd;'
             }
-        }
+        `;
+        
+        const timeStr = timestamp.toLocaleTimeString('es-ES', { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        });
+        
+        messageDiv.innerHTML = `
+            <div style="font-size: 14px; margin-bottom: 5px;">${message}</div>
+            <div style="font-size: 11px; opacity: 0.7;">${timeStr}</div>
+        `;
+        
+        this.chatContainer.appendChild(messageDiv);
+        this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
     }
-    
-    async startCall() {
-        this.isCallActive = true;
-        this.callStartTime = new Date();
-        this.interactionCount = 0;
-        
-        if (this.callButton) {
-            this.callButton.style.display = 'none';
-        }
-        if (this.endCallButton) {
-            this.endCallButton.style.display = 'flex';
-        }
-        
-        this.updateCallStatus(`📞 Conectando con ${this.getAgentName()}...`, 'connected');
-        if (this.callStatusEl) this.callStatusEl.textContent = 'Conectando';
-        
-        if (this.conversationDisplay) {
-            this.conversationDisplay.innerHTML = '';
-        }
-        this.conversationHistory = [];
-        
-        this.startCallTimer();
-        
-        // Saludo inicial personalizado por agente
-        const greeting = this.getAgentGreeting();
-        
-        setTimeout(async () => {
-            this.addToConversation(greeting, 'agent');
-            await this.speakResponse(greeting);
-        }, 2000);
+
+    addSystemMessage(message) {
+        this.addMessage(`🤖 ${message}`, false);
     }
-    
-    getAgentGreeting() {
-        const greetings = {
-            sofia: "¡Hola! Soy Sofía de Claro Colombia. Me da mucho gusto atenderte. ¿En qué puedo ayudarte con nuestros planes móviles hoy?",
-            carolina: "¡Hola! Soy Carolina de Colsanitas. Me da mucho gusto atenderle. ¿En qué puedo asistirle con nuestros planes de salud?",
-            luis: "¡Hola! Habla Luis de TechStore. Vi que tienes interés en tecnología. ¿Qué tipo de equipo tienes en mente?",
-            mariana: "¡Hola! Soy Mariana Educa, especialista en procesos académicos. ¿En qué proceso educativo te puedo ayudar?",
-            juan: "Buenos días, habla el Agente Ciudadano. ¿En qué trámite gubernamental puedo asistirle hoy?",
-            carlos: "Buenos días, soy Carlos, especialista financiero. ¿En qué consulta financiera puedo asesorarle?",
-            marcela: "¡Hola! Soy Marcela de Recursos Humanos. Te contacto para coordinar tu proceso. ¿En qué puedo ayudarte?",
-            andrea: "¡Hola! Soy Andrea de BancaAmiga. ¿En qué producto financiero puedo asesorarte hoy?",
-            andres: "¡Hola! Soy Andrés de OnVacation. ¿Qué tipo de experiencia de viaje tienes en mente?",
-            valentina: "¡Hola! Soy Valentina de Éxito. Tenemos ofertas increíbles. ¿Qué tipo de producto te interesa?"
-        };
+
+    async sendMessage() {
+        const message = this.messageInput?.value?.trim();
+        if (!message || this.isThinking) return;
         
-        return greetings[this.agentType] || "¡Hola! ¿En qué puedo ayudarte?";
-    }
-    
-    endCall() {
-        this.isCallActive = false;
-        this.isAgentSpeaking = false;
-        this.isProcessingResponse = false;
+        // Limpiar input
+        if (this.messageInput) this.messageInput.value = '';
         
-        if (this.callButton) {
-            this.callButton.style.display = 'flex';
-        }
-        if (this.endCallButton) {
-            this.endCallButton.style.display = 'none';
-        }
+        // Agregar mensaje del usuario
+        this.addMessage(message, true);
         
-        this.deactivateMicrophone();
-        this.stopAudio();
-        
-        if (this.callTimer) {
-            clearInterval(this.callTimer);
-            this.callTimer = null;
-        }
-        
-        this.updateCallStatus(`📞 ${this.getAgentName()} lista para atender`, 'waiting');
-        if (this.callStatusEl) this.callStatusEl.textContent = 'Disponible';
-        if (this.transcriptDisplay) {
-            this.transcriptDisplay.textContent = `Llamada finalizada. ¡Gracias por contactar a ${this.getAgentName()}!`;
-        }
-        if (this.audioVisualizer) {
-            this.audioVisualizer.style.display = 'none';
-        }
-        
-        // Reset stats
-        setTimeout(() => {
-            if (this.callDurationEl) this.callDurationEl.textContent = '00:00';
-        }, 2000);
-    }
-    
-    startCallTimer() {
-        this.callTimer = setInterval(() => {
-            if (this.callStartTime && this.isCallActive) {
-                const now = new Date();
-                const duration = Math.floor((now - this.callStartTime) / 1000);
-                const minutes = Math.floor(duration / 60);
-                const seconds = duration % 60;
-                if (this.callDurationEl) {
-                    this.callDurationEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                }
-            }
-        }, 1000);
-    }
-    
-    stopAudio() {
-        if (this.currentAudio) {
-            this.currentAudio.pause();
-            this.currentAudio.currentTime = 0;
-            this.currentAudio = null;
-        }
-        
-        if ('speechSynthesis' in window) {
-            speechSynthesis.cancel();
-        }
-        
-        this.isAgentSpeaking = false;
-        if (this.audioVisualizer) {
-            this.audioVisualizer.style.display = 'none';
-        }
-    }
-    
-    updateCallStatus(message, type) {
-        if (this.callStatus) {
-            this.callStatus.textContent = message;
-            this.callStatus.className = `call-status ${type}`;
-        }
-    }
-    
-    updateStats() {
-        if (this.interactionsEl) {
-            this.interactionsEl.textContent = this.interactionCount;
-        }
-    }
-    
-    addToConversation(message, speaker) {
-        if (!this.conversationDisplay) return;
-        
-        const conversationItem = document.createElement('div');
-        conversationItem.className = `conversation-item ${speaker === 'customer' ? 'customer-message' : 'agent-message'}`;
-        
-        const label = document.createElement('div');
-        label.className = 'message-label';
-        label.textContent = speaker === 'customer' ? 'Cliente' : this.getAgentName();
-        
-        const content = document.createElement('div');
-        content.textContent = message;
-        
-        conversationItem.appendChild(label);
-        conversationItem.appendChild(content);
-        
-        this.conversationDisplay.appendChild(conversationItem);
-        this.conversationDisplay.scrollTop = this.conversationDisplay.scrollHeight;
-        
-        // Mantener historial limitado
-        while (this.conversationDisplay.children.length > 10) {
-            this.conversationDisplay.removeChild(this.conversationDisplay.firstChild);
-        }
-        
+        // Agregar a historial
         this.conversationHistory.push({
-            speaker: speaker,
+            speaker: 'customer',
             message: message,
             timestamp: new Date()
         });
         
-        // Mantener historial en memoria limitado
-        if (this.conversationHistory.length > 10) {
-            this.conversationHistory = this.conversationHistory.slice(-10);
+        // Procesar respuesta
+        await this.processMessage(message);
+    }
+
+    async processMessage(message) {
+        this.isThinking = true;
+        this.updateStatus('Pensando...', '#ff9800');
+        
+        try {
+            // Obtener respuesta de IA
+            const response = await this.getAIResponse(message);
+            
+            // Agregar respuesta al chat
+            this.addMessage(response, false);
+            
+            // Agregar a historial
+            this.conversationHistory.push({
+                speaker: 'agent',
+                message: response,
+                timestamp: new Date()
+            });
+            
+            // Hablar respuesta
+            this.updateStatus('Hablando...', '#2196f3');
+            this.isSpeaking = true;
+            
+            await this.speakResponse(response, this.currentAgent);
+            
+            this.isSpeaking = false;
+            this.updateStatus('Disponible', '#4caf50');
+            
+        } catch (error) {
+            console.error('Error processing message:', error);
+            this.addSystemMessage('Disculpa, hubo un problema. ¿Puedes repetir tu pregunta?');
+            this.updateStatus('Error', '#f44336');
+            
+            setTimeout(() => {
+                this.updateStatus('Disponible', '#4caf50');
+            }, 3000);
+        }
+        
+        this.isThinking = false;
+    }
+
+    async getAIResponse(message) {
+        try {
+            const response = await fetch('/api/ai-response', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message,
+                    agentType: this.currentAgent,
+                    conversationHistory: this.conversationHistory.slice(-6) // Últimas 6 interacciones
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            if (data.response) {
+                return data.response;
+            } else {
+                throw new Error(data.error || 'No response received');
+            }
+            
+        } catch (error) {
+            console.error('Error getting AI response:', error);
+            return this.getFallbackResponse(message);
+        }
+    }
+
+    getFallbackResponse(message) {
+        const agent = this.agents[this.currentAgent];
+        const responses = [
+            `Como especialista en ${agent.specialty} de ${agent.company}, me gustaría ayudarte mejor. ¿Puedes ser más específico?`,
+            `En ${agent.company} nos especializamos en ${agent.specialty}. ¿Qué información específica necesitas?`,
+            `Soy ${agent.name} y estoy aquí para ayudarte con ${agent.specialty}. ¿En qué puedo asistirte?`
+        ];
+        
+        return responses[Math.floor(Math.random() * responses.length)];
+    }
+
+    // ✅ MÉTODO COMPLETAMENTE CORREGIDO: speakResponse con manejo robusto de errores
+    async speakResponse(text, agentType) {
+        if (!text || !agentType) {
+            console.log('speakResponse: Missing text or agentType');
+            return;
+        }
+        
+        // Limitar longitud del texto para evitar problemas
+        const maxLength = 500;
+        const truncatedText = text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+        
+        try {
+            console.log(`Attempting TTS for ${agentType}: "${truncatedText}"`);
+            
+            const response = await fetch('/api/tts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    text: truncatedText,
+                    agentType: agentType
+                })
+            });
+            
+            // ✅ VERIFICAR STATUS DE RESPUESTA ANTES DE PARSEAR JSON
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('TTS API Error:', {
+                    status: response.status,
+                    statusText: response.statusText,
+                    body: errorText
+                });
+                throw new Error(`TTS API returned ${response.status}: ${response.statusText}`);
+            }
+            
+            // ✅ VERIFICAR QUE HAY CONTENIDO ANTES DE PARSEAR JSON
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                const responseText = await response.text();
+                console.error('TTS API returned non-JSON response:', responseText);
+                throw new Error('TTS API returned invalid response format');
+            }
+            
+            // ✅ PARSEAR JSON CON MANEJO DE ERRORES
+            let data;
+            try {
+                const responseText = await response.text();
+                if (!responseText.trim()) {
+                    throw new Error('Empty response from TTS API');
+                }
+                data = JSON.parse(responseText);
+            } catch (parseError) {
+                console.error('Error parsing TTS response JSON:', parseError);
+                throw new Error('Invalid JSON response from TTS API');
+            }
+            
+            // ✅ VERIFICAR QUE LA RESPUESTA TIENE LOS DATOS NECESARIOS
+            if (!data.success || !data.audio) {
+                console.error('TTS API returned unsuccessful response:', data);
+                throw new Error(data.error || 'TTS generation failed - no audio data');
+            }
+            
+            // ✅ CONVERTIR Y REPRODUCIR AUDIO
+            try {
+                const audioBlob = this.base64ToBlob(data.audio, 'audio/mpeg');
+                const audioUrl = URL.createObjectURL(audioBlob);
+                
+                const audio = new Audio(audioUrl);
+                audio.volume = this.volume;
+                
+                // Promesa para esperar que termine el audio
+                return new Promise((resolve, reject) => {
+                    const cleanup = () => {
+                        URL.revokeObjectURL(audioUrl);
+                    };
+                    
+                    audio.addEventListener('ended', () => {
+                        cleanup();
+                        resolve();
+                    });
+                    
+                    audio.addEventListener('error', (error) => {
+                        cleanup();
+                        console.error('Audio playback error:', error);
+                        reject(new Error('Audio playback failed'));
+                    });
+                    
+                    // Timeout de seguridad (30 segundos)
+                    const timeout = setTimeout(() => {
+                        cleanup();
+                        audio.pause();
+                        reject(new Error('Audio playback timeout'));
+                    }, 30000);
+                    
+                    audio.addEventListener('ended', () => clearTimeout(timeout));
+                    audio.addEventListener('error', () => clearTimeout(timeout));
+                    
+                    audio.play().catch(playError => {
+                        cleanup();
+                        clearTimeout(timeout);
+                        console.error('Audio play() failed:', playError);
+                        reject(new Error('Could not start audio playback'));
+                    });
+                });
+                
+            } catch (audioError) {
+                console.error('Error processing audio data:', audioError);
+                throw new Error('Failed to process audio data');
+            }
+            
+        } catch (error) {
+            console.error('Error síntesis de voz:', error);
+            
+            // ✅ NO LANZAR ERROR - SOLO REGISTRAR PARA NO INTERRUMPIR LA CONVERSACIÓN
+            // Mostrar mensaje discreto al usuario
+            if (this.statusIndicator) {
+                const originalStatus = this.statusIndicator.textContent;
+                const originalColor = this.statusIndicator.style.backgroundColor;
+                
+                this.updateStatus('Audio no disponible', '#ff9800');
+                setTimeout(() => {
+                    this.updateStatus(originalStatus, originalColor);
+                }, 2000);
+            }
+        }
+    }
+
+    // Métodos auxiliares
+    clearConversation() {
+        this.conversationHistory = [];
+        if (this.chatContainer) {
+            this.chatContainer.innerHTML = '';
+        }
+        this.addSystemMessage('Conversación reiniciada');
+    }
+
+    exportConversation() {
+        const conversation = {
+            agent: this.agents[this.currentAgent],
+            history: this.conversationHistory,
+            timestamp: new Date()
+        };
+        
+        const dataStr = JSON.stringify(conversation, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(dataBlob);
+        link.download = `conversacion_${this.currentAgent}_${Date.now()}.json`;
+        link.click();
+        
+        URL.revokeObjectURL(link.href);
+    }
+
+    setVolume(volume) {
+        this.volume = Math.max(0, Math.min(1, volume));
+        if (this.volumeSlider) {
+            this.volumeSlider.value = this.volume * 100;
+        }
+    }
+
+    // ✅ MÉTODO DE DIAGNÓSTICO PARA VERIFICAR APIs
+    async testAPIs() {
+        console.log('🔍 Testing APIs...');
+        
+        // Test AI Response API
+        try {
+            const aiResponse = await fetch('/api/ai-response', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    message: 'test',
+                    agentType: 'sofia'
+                })
+            });
+            
+            if (aiResponse.ok) {
+                const aiData = await aiResponse.json();
+                console.log('✅ AI Response API working:', aiData);
+            } else {
+                console.log('❌ AI Response API error:', aiResponse.status);
+            }
+        } catch (error) {
+            console.log('❌ AI Response API failed:', error);
+        }
+        
+        // Test TTS API
+        try {
+            const ttsResponse = await fetch('/api/tts', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    text: 'test',
+                    agentType: 'sofia'
+                })
+            });
+            
+            if (ttsResponse.ok) {
+                console.log('✅ TTS API responds with status 200');
+                const contentType = ttsResponse.headers.get('content-type');
+                console.log('Content-Type:', contentType);
+                
+                if (contentType && contentType.includes('application/json')) {
+                    const ttsData = await ttsResponse.json();
+                    console.log('✅ TTS API working:', { success: ttsData.success, hasAudio: !!ttsData.audio });
+                } else {
+                    const text = await ttsResponse.text();
+                    console.log('❌ TTS API returned non-JSON:', text.substring(0, 200));
+                }
+            } else {
+                console.log('❌ TTS API error:', ttsResponse.status);
+            }
+        } catch (error) {
+            console.log('❌ TTS API failed:', error);
         }
     }
 }
 
-// Función para inicializar el agente correcto según la página
-function initializeAgent() {
-    // Detectar qué agente inicializar basado en la URL o un data attribute
-    const path = window.location.pathname;
-    let agentType = 'sofia'; // Default
+// Auto-inicialización cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', () => {
+    window.agentSystem = new UniversalAgentSystem();
     
-    if (path.includes('sofia')) agentType = 'sofia';
-    else if (path.includes('carolina')) agentType = 'carolina';
-    else if (path.includes('luis')) agentType = 'luis';
-    else if (path.includes('mariana')) agentType = 'mariana';
-    else if (path.includes('juan')) agentType = 'juan';
-    else if (path.includes('carlos')) agentType = 'carlos';
-    else if (path.includes('marcela')) agentType = 'marcela';
-    else if (path.includes('andrea')) agentType = 'andrea';
-    else if (path.includes('andres')) agentType = 'andres';
-    else if (path.includes('valentina')) agentType = 'valentina';
-    
-    // También puedes usar un data attribute en el body
-    const bodyAgentType = document.body.getAttribute('data-agent');
-    if (bodyAgentType) {
-        agentType = bodyAgentType;
+    // Ejecutar diagnóstico automático en desarrollo
+    if (window.location.hostname === 'localhost' || window.location.hostname.includes('127.0.0.1')) {
+        setTimeout(() => {
+            window.agentSystem.testAPIs();
+        }, 2000);
     }
-    
-    window.agentSystem = new UniversalAgentSystem(agentType);
-}
+});
 
-// Auto-inicializar cuando el DOM está listo
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeAgent);
-} else {
-    initializeAgent();
+// Exportar para uso externo
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = UniversalAgentSystem;
 }

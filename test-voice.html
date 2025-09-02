@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Voces - Agentes IA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #000000 100%);
+            color: white;
+            padding: 20px;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .voice-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .voice-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 2px solid #3b82f6;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .voice-card h3 {
+            margin-top: 0;
+            color: #3b82f6;
+        }
+        
+        .test-button {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 5px;
+            transition: transform 0.2s;
+        }
+        
+        .test-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .test-button:disabled {
+            opacity: 0.5;
+            transform: none;
+        }
+        
+        .status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            min-height: 20px;
+        }
+        
+        .status.loading {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+        
+        .status.success {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+        
+        .status.error {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .test-all {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            padding: 15px 30px;
+            font-size: 18px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎤 Test de Voces - Agentes IA</h1>
+        <p>Prueba las voces de todos los agentes para verificar que funcionan correctamente</p>
+        
+        <button class="test-button test-all" onclick="testAllVoices()">
+            🎵 Probar Todas las Voces
+        </button>
+        
+        <div class="voice-grid">
+            <div class="voice-card">
+                <h3>👩 Sofía (Claro)</h3>
+                <p><strong>Voice ID:</strong> UNIruiz09F4kWYjRpOvy</p>
+                <button class="test-button" onclick="testVoice('sofia')">🔊 Probar Voz</button>
+                <div class="status" id="status-sofia"></div>
+            </div>
+
+            <div class="voice-card">
+                <h3>👩 Carolina (Colsanitas)</h3>
+                <p><strong>Voice ID:</strong> 86V9x9hrQds83qf7zaGn</p>
+                <button class="test-button" onclick="testVoice('carolina')">🔊 Probar Voz</button>
+                <div class="status" id="status-carolina"></div>
+            </div>
+
+            <div class="voice-card">
+                <h3>👨 Luis (TechStore)</h3>
+                <p><strong>Voice ID:</strong> ucWwAruuGtBeHfnAaKcJ</p>
+                <button class="test-button" onclick="testVoice('luis')">🔊 Probar Voz</button>
+                <div class="status" id="status-luis"></div>
+            </div>
+
+            <div class="voice-card">
+                <h3>👩 Mariana (Educa)</h3>
+                <p><strong>Voice ID:</strong> xwH1gVhr2dWKPJkpNQT9</p>
+                <button class="test-button" onclick="testVoice('mariana')">🔊 Probar Voz</button>
+                <div class="status" id="status-mariana"></div>
+            </div>
+
+            <div class="voice-card">
+                <h3>👨 Juan (Ciudadano)</h3>
+                <p><strong>Voice ID:</strong> tL5DHtPRo8KiW5xsx8yD</p>
+                <button class="test-button" onclick="testVoice('juan')">🔊 Probar Voz</button>
+                <div class="status" id="status-juan"></div>
+            </div>
+
+            <div class="voice-card">
+                <h3>👨 Carlos (Finanzas)</h3>
+                <p><strong>Voice ID:</strong> Ux2YbCNfurnKHnzlBHGX</p>
+                <button class="test-button" onclick="testVoice('carlos')">🔊 Probar Voz</button>
+                <div class="status" id="status-carlos"></div>
+            </div>
+
+            <div class="voice-card">
+                <h3>👩 Marcela (RRHH)</h3>
+                <p><strong>Voice ID:</strong> VmejBeYhbrcTPwDniox7</p>
+                <button class="test-button" onclick="testVoice('marcela')">🔊 Probar Voz</button>
+                <div class="status" id="status-marcela"></div>
+            </div>
+
+            <div class="voice-card">
+                <h3>👩 Andrea (BancaAmiga)</h3>
+                <p><strong>Voice ID:</strong> oWSxI36XAKnfMWmzmQok</p>
+                <button class="test-button" onclick="testVoice('andrea')">🔊 Probar Voz</button>
+                <div class="status" id="status-andrea"></div>
+            </div>
+
+            <div class="voice-card">
+                <h3>👨 Andrés (OnVacation)</h3>
+                <p><strong>Voice ID:</strong> wmXH34EF7LAsKTjOZWWt</p>
+                <button class="test-button" onclick="testVoice('andres')">🔊 Probar Voz</button>
+                <div class="status" id="status-andres"></div>
+            </div>
+
+            <div class="voice-card">
+                <h3>👩 Valentina (Éxito)</h3>
+                <p><strong>Voice ID:</strong> TsKSGPuG26FpNj0JzQBq</p>
+                <button class="test-button" onclick="testVoice('valentina')">🔊 Probar Voz</button>
+                <div class="status" id="status-valentina"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const testTexts = {
+            sofia: "Hola, soy Sofía de Claro Colombia. Tenemos planes móviles increíbles con gigas ilimitados.",
+            carolina: "Buenos días, soy Carolina de Colsanitas. Nuestros planes de salud cuidan a toda tu familia.",
+            luis: "Hola, soy Luis de TechStore. Tengo los mejores equipos tecnológicos con precios increíbles.",
+            mariana: "Hola, soy Mariana Educa. Te ayudo con todos los procesos educativos y matrículas.",
+            juan: "Buenos días, soy Juan del sistema gubernamental. Coordino todos tus trámites oficiales.",
+            carlos: "Hola, soy Carlos Finanzas. Te ayudo a organizar tus pagos y mejorar tu situación crediticia.",
+            marcela: "Hola, soy Marcela de Recursos Humanos. Coordinemos tu proceso de selección laboral.",
+            andrea: "Hola, soy Andrea de BancaAmiga. Tengo los mejores productos financieros para ti.",
+            andres: "Hola, soy Andrés de OnVacation. Te diseño el viaje perfecto a destinos paradisíacos.",
+            valentina: "Hola, soy Valentina de Éxito. Tenemos ofertas increíbles en toda la tienda."
+        };
+
+        async function testVoice(agentType) {
+            const statusEl = document.getElementById(`status-${agentType}`);
+            const button = event.target;
+            
+            // Estado de carga
+            statusEl.className = 'status loading';
+            statusEl.textContent = '🔄 Generando audio...';
+            button.disabled = true;
+
+            try {
+                const response = await fetch('/api/tts', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        text: testTexts[agentType],
+                        agentType: agentType
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Convertir base64 a blob
+                    const binaryString = atob(data.audio);
+                    const bytes = new Uint8Array(binaryString.length);
+                    for (let i = 0; i < binaryString.length; i++) {
+                        bytes[i] = binaryString.charCodeAt(i);
+                    }
+                    
+                    const audioBlob = new Blob([bytes], { type: 'audio/mpeg' });
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    const audio = new Audio(audioUrl);
+                    
+                    statusEl.className = 'status success';
+                    statusEl.textContent = '▶️ Reproduciendo audio...';
+                    
+                    audio.onended = () => {
+                        URL.revokeObjectURL(audioUrl);
+                        statusEl.textContent = '✅ Audio reproducido correctamente';
+                        button.disabled = false;
+                    };
+                    
+                    audio.onerror = () => {
+                        statusEl.className = 'status error';
+                        statusEl.textContent = '❌ Error reproduciendo audio';
+                        button.disabled = false;
+                    };
+                    
+                    await audio.play();
+                    
+                } else {
+                    const errorData = await response.json();
+                    throw new Error(`API Error: ${response.status} - ${errorData.error}`);
+                }
+                
+            } catch (error) {
+                console.error('Error testing voice:', error);
+                statusEl.className = 'status error';
+                statusEl.textContent = `❌ Error: ${error.message}`;
+                button.disabled = false;
+            }
+        }
+
+        async function testAllVoices() {
+            const agents = ['sofia', 'carolina', 'luis', 'mariana', 'juan', 'carlos', 'marcela', 'andrea', 'andres', 'valentina'];
+            
+            for (let i = 0; i < agents.length; i++) {
+                const agent = agents[i];
+                console.log(`Testing voice ${i + 1}/${agents.length}: ${agent}`);
+                
+                // Crear evento falso para simular click
+                const fakeEvent = { target: document.querySelector(`button[onclick="testVoice('${agent}')"]`) };
+                window.event = fakeEvent;
+                
+                await testVoice(agent);
+                
+                // Esperar 3 segundos entre cada prueba
+                if (i < agents.length - 1) {
+                    await new Promise(resolve => setTimeout(resolve, 3000));
+                }
+            }
+            
+            console.log('✅ Test de todas las voces completado');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marcela RRHH - Sistema de Llamadas | Recursos Humanos</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-agent="marcela">
+    <!-- Floating Elements -->
+    <div class="floating-elements">
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header-enhanced">
+        <div class="container">
+            <nav class="nav-content">
+                <div class="logo-section">
+                    <div class="logo-container">
+                    <img src="/agentepage/src/loguito.png" alt="Antares Innovate" class="h-16 w-16 lg:h-24 lg:w-24">
+                    <div class="logo-glow"></div>
+                    </div>
+                    <div class="agent-info">
+                        <h1>Marcela Rodríguez</h1>
+                        <p>Especialista en Recursos Humanos</p>
+                    </div>
+                </div>
+                <a href="/agentepage/list/index.html" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    Volver a Agentes
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Call Interface -->
+        <section class="main-container">
+            <div class="marcela-container glass-effect">
+                <!-- Header -->
+                <div class="marcela-header">
+                    <div class="agent-avatar-large">
+                        👩‍💼
+                    </div>
+                    <h2 style="color: var(--coral-primary); font-size: 1.5rem; font-weight: 700; margin-bottom: 10px;">
+                        Marcela RRHH - Especialista
+                    </h2>
+                    <p style="color: #8696a0; margin-bottom: 20px;">
+                        Confirmación de Entrevistas y Procesos de Selección
+                    </p>
+                    
+                    <!-- Call Status -->
+                    <div class="call-status waiting" id="callStatus">
+                        👩‍💼 Marcela lista para coordinar entrevistas
+                        <span class="microphone-indicator" id="micIndicator"></span>
+                    </div>
+                </div>
+
+                <!-- Audio Visualizer -->
+                <div class="audio-visualizer" id="audioVisualizer">
+                    <div class="audio-bars">
+                        <div class="audio-bar"></div>
+                        <div class="audio-bar"></div>
+                        <div class="audio-bar"></div>
+                        <div class="audio-bar"></div>
+                        <div class="audio-bar"></div>
+                    </div>
+                </div>
+
+                <!-- Transcript Display -->
+                <div class="transcript-display" id="transcriptDisplay">
+                    Sistema optimizado para gestión de entrevistas y procesos de selección 💼
+                </div>
+
+                <!-- Call Controls -->
+                <div class="call-controls">
+                    <button class="call-button" id="callButton">
+                        <i class="fas fa-phone"></i>
+                        Iniciar Llamada
+                    </button>
+                    <button class="end-call-button" id="endCallButton" style="display: none;">
+                        <i class="fas fa-phone-slash"></i>
+                        Terminar
+                    </button>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="callDuration">00:00</div>
+                        <div class="stat-label">Duración</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="responseTime">~750ms</div>
+                        <div class="stat-label">Tiempo IA</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="callStatus2">Lista</div>
+                        <div class="stat-label">Estado</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="interactions">0</div>
+                        <div class="stat-label">Interacciones</div>
+                    </div>
+                </div>
+
+                <!-- Conversation Display -->
+                <div class="conversation-display" id="conversationDisplay">
+                    <div style="text-align: center; color: #8696a0; padding: 2rem;">
+                        <i class="fas fa-briefcase" style="font-size: 3rem; margin-bottom: 1rem; color: var(--coral-primary);"></i>
+                        <h3>Conversación en Espera</h3>
+                        <p>Inicia una llamada para coordinar entrevistas y procesos de selección</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/agentepage/js/agent-system.js"></script>
+</body>
+</html>

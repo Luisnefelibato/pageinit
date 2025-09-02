@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sofía IA - Sistema de Llamadas | Claro Colombia</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-agent="sofia">
+    <!-- Floating Elements -->
+    <div class="floating-elements">
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header-enhanced">
+            <nav class="nav-content">
+                <div class="logo-section">
+                    <div class="logo-container">
+                    <img src="/agentepage/src/loguito.png" alt="Antares Innovate" class="h-16 w-16 lg:h-24 lg:w-24">
+                    <div class="logo-glow"></div>
+                    </div>
+                    <div class="agent-info">
+                        <h1>Sofía Rodríguez</h1>
+                        <p>Especialista en Telecomunicaciones Claro</p>
+                    </div>
+                </div>
+                <button class="back-button" onclick="window.history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                    Volver
+                </button>
+            </nav>
+        </header>
+
+        <!-- Main Interface -->
+        <div class="phone-container">
+            <!-- Sofia Header -->
+            <div class="sofia-header">
+                <div class="sofia-avatar">
+                    👩‍💼
+                </div>
+                <h2 class="sofia-name">Sofía IA</h2>
+                <p class="sofia-title">Asesora Comercial</p>
+                <p class="sofia-company">Claro Colombia</p>
+            </div>
+
+            <!-- Call Status -->
+            <div class="call-status waiting" id="callStatus">
+                📞 Sofía está lista para atender - Sistema activado
+                <span class="microphone-indicator" id="micIndicator"></span>
+            </div>
+
+            <!-- Audio Visualizer -->
+            <div class="audio-visualizer" id="audioVisualizer">
+                <div class="audio-wave"></div>
+            </div>
+
+            <!-- Transcript Display -->
+            <div class="transcript-display" id="transcriptDisplay">
+                Sistema optimizado para asesoría en planes móviles Claro Colombia 📱
+            </div>
+
+            <!-- Call Controls -->
+            <div class="call-controls">
+                <button class="call-button" id="callButton">
+                    <i class="fas fa-phone"></i>
+                    Iniciar Llamada
+                </button>
+                <button class="control-button" id="volumeButton">
+                    <i class="fas fa-volume-up"></i>
+                    Volumen: Alto
+                </button>
+                <button class="control-button" id="stopButton" style="display: none;">
+                    <i class="fas fa-stop"></i>
+                    Parar
+                </button>
+            </div>
+
+            <!-- Statistics -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="responseTime">~800ms</div>
+                    <div class="stat-label">Tiempo IA</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="callDuration">00:00</div>
+                    <div class="stat-label">Duración</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="interactions">0</div>
+                    <div class="stat-label">Interacciones</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="sofiaStatus">Lista</div>
+                    <div class="stat-label">Estado Sofía</div>
+                </div>
+            </div>
+
+            <!-- Conversation Display -->
+            <div class="conversation-display" id="conversationDisplay">
+                <div style="text-align: center; color: #8696a0; padding: 40px;">
+                    <i class="fas fa-comments" style="font-size: 3rem; margin-bottom: 20px; color: var(--claro-red);"></i>
+                    <h3>Conversación en Espera</h3>
+                    <p>Inicia una llamada para comenzar a conversar con Sofía sobre planes Claro</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-robot"></i>
+            </div>
+            <span style="font-weight: 600; font-size: 1.1rem;">Antares Innovate</span>
+        </div>
+        <p style="color: #8696a0; font-size: 0.9rem;">
+            La Creatividad Mueve el Mundo; la Tecnología lo Acelera.
+        </p>
+    </footer>
+
+    <script src="/agentepage/js/agent-system.js"></script>
+</body>
+</html>

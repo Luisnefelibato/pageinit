@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo de Agentes IA - Selecciona tu Vendedor Digital | Antares Innovate</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-particle" style="top: 10%; left: 10%; animation-delay: 0s;"></div>
+        <div class="floating-particle" style="top: 20%; right: 15%; animation-delay: 1s;"></div>
+        <div class="floating-particle" style="top: 60%; left: 5%; animation-delay: 2s;"></div>
+        <div class="floating-particle" style="top: 80%; right: 20%; animation-delay: 3s;"></div>
+        <div class="floating-particle" style="top: 40%; left: 80%; animation-delay: 4s;"></div>
+        <div class="floating-particle" style="top: 15%; left: 70%; animation-delay: 5s;"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header-enhanced relative z-50 p-4 lg:p-6">
+        <nav class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="logo-container">
+                    <img src="/agentepage/src/loguito.png" alt="Antares Innovate" class="h-16 w-16 lg:h-24 lg:w-24">
+                    <div class="logo-glow"></div>
+                </div>
+                <div class="brand-info">
+                    <span class="brand-name text-lg lg:text-xl font-bold">Antares Innovate</span>
+                    <div class="brand-tagline">Vendedores Digitales IA</div>
+                </div>
+            </div>
+
+            <a href="/agentepage/index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                <span>Volver</span>
+            </a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <section class="section-padding">
+        <div class="container mx-auto">
+            <h1 class="hero-title fade-in-up">
+                Selecciona tu <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">Vendedor Digital</span>
+            </h1>
+            <p class="hero-subtitle fade-in-up animate-delay-1">
+                Prueba nuestros agentes especializados en diferentes sectores y experimenta el poder de la IA en ventas profesionales.
+            </p>
+
+            <div class="agents-grid">
+                <!-- Sofía de Claro -->
+                <div class="agent-card sofia-card fade-in-up animate-delay-1">
+                    <div class="status-indicator"></div>
+                    <div class="agent-avatar">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="agent-name">Sofía Rodríguez</h3>
+                    <p class="agent-title">Especialista en Telecomunicaciones</p>
+                    <p class="agent-company">Claro Colombia</p>
+                    <p class="agent-description">
+                        Experta en planes móviles, paquetes de datos y servicios de telecomunicaciones. Sofía domina todas las ofertas de Claro y puede asesorar desde planes básicos hasta soluciones empresariales avanzadas.
+                    </p>
+                    <div class="agent-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">94%</div>
+                            <div class="stat-label">Tasa Cierre</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">2.3min</div>
+                            <div class="stat-label">Tiempo Promedio</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">1,247</div>
+                            <div class="stat-label">Ventas Mes</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.9/5</div>
+                            <div class="stat-label">Satisfacción</div>
+                        </div>
+                    </div>
+                    <a href="sofia/index.html" target="_blank" class="agent-button">
+                        <i class="fas fa-phone"></i>
+                        <span>Probar Sofía</span>
+                    </a>
+                </div>
+
+                <!-- Carolina de Colsanitas -->
+                <div class="agent-card carolina-card fade-in-up animate-delay-2">
+                    <div class="status-indicator"></div>
+                    <div class="agent-avatar">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3 class="agent-name">Carolina Méndez</h3>
+                    <p class="agent-title">Experta en Seguros de Salud</p>
+                    <p class="agent-company">Colsanitas EPS</p>
+                    <p class="agent-description">
+                        Especialista en seguros médicos, planes de salud familiar y cobertura empresarial. Carolina maneja todo el portafolio de Colsanitas con un enfoque humanizado y profesional.
+                    </p>
+                    <div class="agent-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">96%</div>
+                            <div class="stat-label">Tasa Cierre</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">3.1min</div>
+                            <div class="stat-label">Tiempo Promedio</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">892</div>
+                            <div class="stat-label">Afiliaciones Mes</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.8/5</div>
+                            <div class="stat-label">Satisfacción</div>
+                        </div>
+                    </div>
+                    <a href="carolina/index.html" target="_blank" class="agent-button">
+                        <i class="fas fa-phone"></i>
+                        <span>Probar Carolina</span>
+                    </a>
+                </div>
+
+                <!-- Luis de TechStore -->
+                <div class="agent-card luis-card fade-in-up animate-delay-3">
+                    <div class="status-indicator"></div>
+                    <div class="agent-avatar">
+                        <i class="fas fa-laptop"></i>
+                    </div>
+                    <h3 class="agent-name">Luis García</h3>
+                    <p class="agent-title">Vendedor de Tecnología</p>
+                    <p class="agent-company">TechStore Pro</p>
+                    <p class="agent-description">
+                        Experto en tecnología y gadgets. Luis conoce cada especificación técnica y puede recomendar desde smartphones hasta equipos empresariales según las necesidades exactas del cliente.
+                    </p>
+                    <div class="agent-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">92%</div>
+                            <div class="stat-label">Tasa Cierre</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">2.8min</div>
+                            <div class="stat-label">Tiempo Promedio</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">1,534</div>
+                            <div class="stat-label">Ventas Mes</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.7/5</div>
+                            <div class="stat-label">Satisfacción</div>
+                        </div>
+                    </div>
+                    <a href="luis/index.html" target="_blank" class="agent-button">
+                        <i class="fas fa-phone"></i>
+                        <span>Probar Luis</span>
+                    </a>
+                </div>
+
+                <!-- Mariana Educa -->
+                <div class="agent-card mariana-card fade-in-up animate-delay-4">
+                    <div class="status-indicator"></div>
+                    <div class="agent-avatar">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="agent-name">Mariana Educa</h3>
+                    <p class="agent-title">Especialista en Educación</p>
+                    <p class="agent-company">Sector Educativo</p>
+                    <p class="agent-description">
+                        Experta en seguimiento de matrículas de colegios y universidades. Mariana conoce fechas de inscripción, documentos requeridos, costos educativos, becas disponibles y coordina todo el proceso académico.
+                    </p>
+                    <div class="agent-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">97%</div>
+                            <div class="stat-label">Tasa Éxito</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">2.5min</div>
+                            <div class="stat-label">Tiempo Promedio</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">1,089</div>
+                            <div class="stat-label">Matrículas Mes</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.9/5</div>
+                            <div class="stat-label">Satisfacción</div>
+                        </div>
+                    </div>
+                    <a href="mariana/index.html" target="_blank" class="agent-button">
+                        <i class="fas fa-phone"></i>
+                        <span>Probar Mariana</span>
+                    </a>
+                </div>
+
+                <!-- Juan Ciudadano -->
+                <div class="agent-card juan-card fade-in-up animate-delay-5">
+                    <div class="status-indicator"></div>
+                    <div class="agent-avatar">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <h3 class="agent-name">Juan Ciudadano</h3>
+                    <p class="agent-title">Agente de Trámites</p>
+                    <p class="agent-company">Servicios Gubernamentales</p>
+                    <p class="agent-description">
+                        Especialista en recordatorio de citas para pasaportes, licencias y trámites gubernamentales. Juan conoce todos los requisitos, costos, fechas de vencimiento y coordina citas oficiales.
+                    </p>
+                    <div class="agent-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">95%</div>
+                            <div class="stat-label">Tasa Éxito</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">1.8min</div>
+                            <div class="stat-label">Tiempo Promedio</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">2,156</div>
+                            <div class="stat-label">Trámites Mes</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.8/5</div>
+                            <div class="stat-label">Satisfacción</div>
+                        </div>
+                    </div>
+                    <a href="juan/index.html" target="_blank" class="agent-button">
+                        <i class="fas fa-phone"></i>
+                        <span>Probar Juan</span>
+                    </a>
+                </div>
+
+                <!-- Carlos Finanzas -->
+                <div class="agent-card carlos-card fade-in-up animate-delay-6">
+                    <div class="status-indicator"></div>
+                    <div class="agent-avatar">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <h3 class="agent-name">Carlos Finanzas</h3>
+                    <p class="agent-title">Especialista Financiero</p>
+                    <p class="agent-company">Servicios Crediticios</p>
+                    <p class="agent-description">
+                        Experto en recordatorio de pagos de créditos y tarjetas. Carlos maneja fechas de vencimiento, intereses, refinanciación, consolidación de deudas y opciones de pago para mantener finanzas sanas.
+                    </p>
+                    <div class="agent-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">93%</div>
+                            <div class="stat-label">Puntualidad</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">3.2min</div>
+                            <div class="stat-label">Tiempo Promedio</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">1,678</div>
+                            <div class="stat-label">Recordatorios Mes</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.6/5</div>
+                            <div class="stat-label">Satisfacción</div>
+                        </div>
+                    </div>
+                    <a href="carlos/index.html" target="_blank" class="agent-button">
+                        <i class="fas fa-phone"></i>
+                        <span>Probar Carlos</span>
+                    </a>
+                </div>
+
+                <!-- Marcela RRHH -->
+                <div class="agent-card marcela-card fade-in-up animate-delay-7">
+                    <div class="status-indicator"></div>
+                    <div class="agent-avatar">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="agent-name">Marcela RRHH</h3>
+                    <p class="agent-title">Especialista en Recursos Humanos</p>
+                    <p class="agent-company">Gestión de Talento</p>
+                    <p class="agent-description">
+                        Experta en confirmación de entrevistas de trabajo. Marcela coordina procesos de selección, confirma citas laborales, informa sobre requisitos, salarios, beneficios y fechas de incorporación.
+                    </p>
+                    <div class="agent-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">98%</div>
+                            <div class="stat-label">Confirmación</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">2.1min</div>
+                            <div class="stat-label">Tiempo Promedio</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">967</div>
+                            <div class="stat-label">Entrevistas Mes</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.9/5</div>
+                            <div class="stat-label">Satisfacción</div>
+                        </div>
+                    </div>
+                    <a href="marcela/index.html" target="_blank" class="agent-button">
+                        <i class="fas fa-phone"></i>
+                        <span>Probar Marcela</span>
+                    </a>
+                </div>
+
+                <!-- Andrea BancaAmiga -->
+                <div class="agent-card andrea-card fade-in-up animate-delay-8">
+                    <div class="status-indicator"></div>
+                    <div class="agent-avatar">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <h3 class="agent-name">Andrea BancaAmiga</h3>
+                    <p class="agent-title">Especialista Bancaria</p>
+                    <p class="agent-company">Productos Financieros</p>
+                    <p class="agent-description">
+                        Experta en venta de productos financieros como tarjetas de crédito y préstamos. Andrea conoce tasas de interés, beneficios bancarios, seguros, inversiones y procesos crediticios completos.
+                    </p>
+                    <div class="agent-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">91%</div>
+                            <div class="stat-label">Tasa Cierre</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.2min</div>
+                            <div class="stat-label">Tiempo Promedio</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">1,345</div>
+                            <div class="stat-label">Productos Mes</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.7/5</div>
+                            <div class="stat-label">Satisfacción</div>
+                        </div>
+                    </div>
+                    <a href="andrea/index.html" target="_blank" class="agent-button">
+                        <i class="fas fa-phone"></i>
+                        <span>Probar Andrea</span>
+                    </a>
+                </div>
+
+                <!-- Andrés OnVacation -->
+                <div class="agent-card andres-card fade-in-up animate-delay-9">
+                    <div class="status-indicator"></div>
+                    <div class="agent-avatar">
+                        <i class="fas fa-plane"></i>
+                    </div>
+                    <h3 class="agent-name">Andrés OnVacation</h3>
+                    <p class="agent-title">Especialista en Turismo</p>
+                    <p class="agent-company">Agencia de Viajes</p>
+                    <p class="agent-description">
+                        Experto en venta de paquetes turísticos y viajes. Andrés conoce destinos, paquetes todo incluido, vuelos, hoteles, excursiones, promociones y maneja toda la documentación requerida.
+                    </p>
+                    <div class="agent-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">89%</div>
+                            <div class="stat-label">Tasa Cierre</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">5.1min</div>
+                            <div class="stat-label">Tiempo Promedio</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">723</div>
+                            <div class="stat-label">Viajes Mes</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.8/5</div>
+                            <div class="stat-label">Satisfacción</div>
+                        </div>
+                    </div>
+                    <a href="andres/index.html" target="_blank" class="agent-button">
+                        <i class="fas fa-phone"></i>
+                        <span>Probar Andrés</span>
+                    </a>
+                </div>
+
+                <!-- Valentina Éxito -->
+                <div class="agent-card valentina-card fade-in-up animate-delay-10">
+                    <div class="status-indicator"></div>
+                    <div class="agent-avatar">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3 class="agent-name">Valentina Éxito</h3>
+                    <p class="agent-title">Especialista en Retail</p>
+                    <p class="agent-company">Supermercados Éxito</p>
+                    <p class="agent-description">
+                        Experta en ofertas de tiendas de ropa, calzado, hogar y supermercados. Valentina conoce todas las promociones, descuentos, productos de temporada y coordina compras con entregas a domicilio.
+                    </p>
+                    <div class="agent-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">96%</div>
+                            <div class="stat-label">Tasa Cierre</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">3.5min</div>
+                            <div class="stat-label">Tiempo Promedio</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">2,234</div>
+                            <div class="stat-label">Ventas Mes</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.8/5</div>
+                            <div class="stat-label">Satisfacción</div>
+                        </div>
+                    </div>
+                    <a href="valentina/index.html" target="_blank" class="agent-button">
+                        <i class="fas fa-phone"></i>
+                        <span>Probar Valentina</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="cta-section fade-in-up animate-delay-3">
+                <h2 class="text-3xl font-bold mb-6 text-white">
+                    ¿Impresionado con los resultados?
+                </h2>
+                <p class="text-xl text-gray-300 mb-8">
+                    Estos son solo demos. Imagina el potencial real para tu empresa con agentes personalizados para tu industria específica.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="https://wa.me/16893312690?text=Quiero%20solicitar%20informacion%20sobre%20los%20agentes%20de%20ventas%20IA" target="_blank" class="back-button">
+                        <i class="fas fa-whatsapp"></i>
+                        Solicitar Información
+                    </a>
+                    <a href="javascript:history.back()" class="back-button bg-transparent border border-blue-400 hover:bg-blue-400">
+                        <i class="fas fa-arrow-left"></i>
+                        Volver al Inicio
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-gray-800">
+        <div class="container mx-auto text-center">
+            <div class="flex items-center justify-center space-x-3 mb-4">
+                <img src="loguito.png" alt="Antares Innovate" class="h-12 w-12">
+                <span class="font-semibold">Antares Innovate</span>
+            </div>
+            <p class="text-gray-400 text-sm">
+                La Creatividad Mueve el Mundo; la Tecnología lo Acelera.
+            </p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

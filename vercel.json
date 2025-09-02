@@ -1,0 +1,71 @@
+{
+  "functions": {
+    "api/ai-response.js": {
+      "maxDuration": 30
+    },
+    "api/tts.js": {
+      "maxDuration": 30
+    }
+  },
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/sofia/(.*)",
+      "destination": "/sofia/index.html"
+    },
+    {
+      "source": "/carolina/(.*)",
+      "destination": "/carolina/index.html"
+    },
+    {
+      "source": "/luis/(.*)",
+      "destination": "/luis/index.html"
+    },
+    {
+      "source": "/mariana/(.*)",
+      "destination": "/mariana/index.html"
+    },
+    {
+      "source": "/juan/(.*)",
+      "destination": "/juan/index.html"
+    },
+    {
+      "source": "/carlos/(.*)",
+      "destination": "/carlos/index.html"
+    },
+    {
+      "source": "/marcela/(.*)",
+      "destination": "/marcela/index.html"
+    },
+    {
+      "source": "/andrea/(.*)",
+      "destination": "/andrea/index.html"
+    },
+    {
+      "source": "/andres/(.*)",
+      "destination": "/andres/index.html"
+    },
+    {
+      "source": "/valentina/(.*)",
+      "destination": "/valentina/index.html"
+    }
+  ]
+}

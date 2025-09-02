@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carlos Finanzas - Sistema de Llamadas | Finanzas</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-agent="carlos">
+    <!-- Floating Elements -->
+    <div class="floating-elements">
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header-enhanced">
+        <div class="container">
+            <nav class="nav-content">
+                <div class="logo-section">
+                    <div class="logo-container">
+                    <img src="/agentepage/src/loguito.png" alt="Antares Innovate" class="h-16 w-16 lg:h-24 lg:w-24">
+                    <div class="logo-glow"></div>
+                    </div>
+                    <div class="agent-info">
+                        <h1>Carlos Morales</h1>
+                        <p>Especialista en Recordatorios Financieros</p>
+                    </div>
+                </div>
+                <a href="/agentepage/list/index.html" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    Volver a Agentes
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Phone Simulation -->
+        <section class="phone-simulation-container">
+            <div class="phone-container glass-effect">
+                <!-- Phone Header -->
+                <div class="phone-header">
+                    <div class="agent-avatar-large">
+                        💰
+                    </div>
+                    <h2 style="color: var(--gold-accent); font-size: 1.5rem; font-weight: 700; margin-bottom: 10px;">
+                        Carlos Finanzas IA
+                    </h2>
+                    <p style="color: #8696a0; margin-bottom: 20px;">
+                        Recordatorios de Pagos y Asesoría Crediticia
+                    </p>
+                    
+                    <!-- Call Status -->
+                    <div class="call-status waiting" id="callStatus">
+                        💰 Carlos listo para gestionar sus finanzas
+                    </div>
+                </div>
+
+                <!-- Audio Visualizer -->
+                <div class="audio-visualizer" id="audioVisualizer">
+                    <div class="audio-wave"></div>
+                </div>
+
+                <!-- Transcript Display -->
+                <div class="transcript-display" id="transcriptDisplay">
+                    Sistema financiero optimizado para recordatorios de pagos y asesoría crediticia 💳
+                </div>
+
+                <!-- Call Controls -->
+                <div class="call-controls">
+                    <button class="call-button" id="callButton">
+                        <i class="fas fa-phone"></i>
+                        Iniciar Llamada
+                    </button>
+                    <button class="end-call-button" id="endCallButton" style="display: none;">
+                        <i class="fas fa-phone-slash"></i>
+                        Terminar
+                    </button>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="callDuration">00:00</div>
+                        <div class="stat-label">Duración</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="responseTime">~750ms</div>
+                        <div class="stat-label">Tiempo IA</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="callStatus2">Disponible</div>
+                        <div class="stat-label">Estado</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="interactions">0</div>
+                        <div class="stat-label">Consultas</div>
+                    </div>
+                </div>
+
+                <!-- Conversation Display -->
+                <div class="conversation-display" id="conversationDisplay">
+                    <!-- Conversations will appear here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="benefits-section">
+            <div class="section-title">
+                Especialidades de <span style="background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Carlos Finanzas</span>
+            </div>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <h3 class="benefit-title">Tarjetas de Crédito</h3>
+                    <p class="benefit-description">
+                        Recordatorios personalizados de fechas de pago, asesoría sobre límites de crédito, consolidación de deudas y estrategias para mejorar tu historial crediticio.
+                    </p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3 class="benefit-title">Créditos Hipotecarios</h3>
+                    <p class="benefit-description">
+                        Seguimiento de cuotas hipotecarias, opciones de refinanciación, cálculos de prepagos y asesoría para optimizar tu crédito de vivienda.
+                    </p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h3 class="benefit-title">Créditos Vehiculares</h3>
+                    <p class="benefit-description">
+                        Control de pagos de vehículos, seguros obligatorios, SOAT, renovaciones y opciones de refinanciación para mejorar tus condiciones crediticias.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <span style="font-weight: 600; font-size: 1.1rem;">Antares Innovate</span>
+            </div>
+            <p class="footer-text">
+                La Creatividad Mueve el Mundo; la Tecnología lo Acelera.
+            </p>
+        </div>
+    </footer>
+
+    <script src="/agentepage/js/agent-system.js"></script>
+</body>
+</html>

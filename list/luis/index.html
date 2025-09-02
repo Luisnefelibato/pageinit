@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luis IA - Sistema de Llamadas Real | TechStore</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-agent="luis">
+    <div class="floating-elements">
+        <div class="floating-particle" style="top: 10%; left: 10%; animation-delay: 0s;"></div>
+        <div class="floating-particle" style="top: 20%; right: 15%; animation-delay: 1s;"></div>
+        <div class="floating-particle" style="top: 60%; left: 5%; animation-delay: 2s;"></div>
+        <div class="floating-particle" style="top: 80%; right: 20%; animation-delay: 3s;"></div>
+        <div class="floating-particle" style="top: 40%; left: 80%; animation-delay: 4s;"></div>
+    </div>
+
+    <div class="container">
+        <header class="header-enhanced">
+            <nav class="nav-container">
+                <div class="logo-container">
+                    <img src="/agentepage/src/loguito.png" alt="Antares Innovate" class="h-16 w-16 lg:h-24 lg:w-24">
+                    <div class="logo-glow"></div>
+                    </div>
+                    <div class="brand-info">
+                        <span class="brand-name">TechStore Bogotá</span>
+                        <div class="brand-tagline">Sistema IA de Ventas</div>
+                    </div>
+                </div>
+                <a href="/agentepage/list/index.html" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    Volver a Selección
+                </a>
+            </nav>
+        </header>
+
+        <section class="luis-section">
+            <div class="luis-container">
+                <div class="luis-glow"></div>
+                <div class="luis-avatar">
+                    <i class="fas fa-male text-white"></i>
+                </div>
+            </div>
+
+            <div class="luis-info">
+                <h1>Luis Martínez</h1>
+                <div class="luis-title">Especialista en Tecnología</div>
+                <p class="luis-description">
+                    Experto en ventas de equipos tecnológicos con amplio conocimiento en laptops, smartphones, 
+                    tablets y gadgets. Brindo asesoramiento técnico especializado y comparaciones detalladas.
+                </p>
+            </div>
+        </section>
+
+        <section class="call-interface">
+            <div class="call-status waiting" id="callStatus">
+                <i class="fas fa-phone-alt"></i> Luis IA listo - Sistema de ventas tecnológicas activado
+                <span class="microphone-indicator" id="micIndicator"></span>
+            </div>
+
+            <div class="audio-visualizer" id="audioVisualizer">
+                <div class="audio-wave"></div>
+            </div>
+
+            <div class="call-controls">
+                <button class="call-button" id="callButton">
+                    <i class="fas fa-phone"></i>
+                    Iniciar Llamada
+                </button>
+                <button class="control-button" id="volumeButton">
+                    <i class="fas fa-volume-up"></i> Volumen: Alto
+                </button>
+                <button class="control-button" id="stopButton" style="display: none;">
+                    <i class="fas fa-stop"></i> Parar
+                </button>
+            </div>
+
+            <div class="transcript-container">
+                <div class="transcript-header">
+                    <i class="fas fa-microphone"></i>
+                    <span>Transcripción en Tiempo Real</span>
+                </div>
+                <div class="transcript-content" id="transcriptContent">
+                    Sistema optimizado para asesoramiento tecnológico especializado 💻
+                    <span class="typing-cursor" id="cursor" style="display: none;"></span>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="responseTime">~600ms</div>
+                    <div class="stat-label">Tiempo Respuesta</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="callDuration">00:00</div>
+                    <div class="stat-label">Duración Llamada</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="interactions">0</div>
+                    <div class="stat-label">Interacciones</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="luisStatus">Disponible</div>
+                    <div class="stat-label">Estado Luis IA</div>
+                </div>
+            </div>
+
+            <div class="conversation-history" id="conversationHistory">
+                <h3 style="color: var(--tech-glow); margin-bottom: 15px; text-align: center;">
+                    <i class="fas fa-history"></i> Historial de Conversación
+                </h3>
+                <div style="text-align: center; color: rgba(255, 255, 255, 0.6); padding: 30px;">
+                    Inicia una llamada para conversar en tiempo real con Luis IA
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="/agentepage/js/agent-system.js"></script>
+</body>
+</html>

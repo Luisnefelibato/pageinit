@@ -1,0 +1,29 @@
+{
+  "name": "agentes-ia-ventas",
+  "version": "1.0.0",
+  "description": "Sistema de agentes IA conversacionales para ventas - Antares Innovate",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Static site, no build needed'",
+    "deploy": "vercel --prod"
+  },
+  "keywords": [
+    "ai",
+    "agents",
+    "sales",
+    "voice",
+    "conversational",
+    "gemini",
+    "elevenlabs"
+  ],
+  "author": "Antares Innovate",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "vercel": "^32.5.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
